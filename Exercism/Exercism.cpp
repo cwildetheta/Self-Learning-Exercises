@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <ctime>
 #include <windows.h>
+#include <cmath>
 
 int main()
 {
@@ -24,6 +25,11 @@ int main()
         std::cout << "11. Nucleotide count." << std::endl;
         std::cout << "12. DNA to RNA." << std::endl;
         std::cout << "13. Collatz Conjecture." << std::endl;
+        std::cout << "14. Difference of squares." << std::endl;
+        std::cout << "15. Nth Prime." << std::endl;
+        std::cout << "16. Queen attack." << std::endl;
+        std::cout << "17. Sieve of Eratosthenes." << std::endl;
+        std::cout << "18. Integer to English." << std::end;
         std::cout << "0. Exit system." << std::endl;
         int program_choice = 0;
         std::cin >> program_choice;
@@ -558,28 +564,192 @@ int main()
                 break;
             }
             case 13:{ //Collatz Conjecture.
-                int input;
+                int input, steps = 0;
                 std::cout << "Please enter an positive integer to begin: ";
                 std::cin >> input;
                 if(input > 0){
                     while(input > 1){
                         if(input%2 == 0){
                             input = input/2;
+                            steps++;
                         }
                         else{
                             input = (3*input) + 1;
+                            steps++;
                         }
                         if(input > 1){
                             std::cout << input << "   ";
                         }
                     }
                     std::cout << input << "   " << std::endl;
+                    std::cout << "Reaching 1 took " << steps << " steps." << std::endl;
                 }
                 else{
                     std::cout << "That is not a positive integer, so the code cannot run." << std::endl;
                 }
-
                 Sleep(2000);
+                break;
+            }
+            case 14:{ //Difference of squares.
+                int integer, sum = 0, square_sum = 0;
+                std::cout << "Enter a positive integer: ";
+                std::cin >> integer;
+                if(integer > 0){
+                    for(int i = 0; i < integer; i++){
+                        sum = sum + i + 1;
+                        square_sum = square_sum + ((i + 1) * (i + 1));
+                    }
+                    sum = sum * sum;
+                    std::cout << "The sqaure of the sum of the first " << integer << " integers is " << sum << ", while the sum of the squares is " << square_sum << "." << std::endl;
+                    std::cout << "The difference between the two squares is " << sum - square_sum << "." << std::endl;
+                }
+                else{
+                    std::cout << "That is not a positive integer, so the code cannot run." << std::endl;
+                }
+                break;
+            }
+            case 15:{ //Nth Prime.
+                int N, primes_found = 0, number_checking = 2;
+                bool found_Nth_prime = false;
+                std::cout << "Enter a positive integer: ";
+                std::cin >> N;
+                if(N > 0){
+                    int start_time = std::time(NULL);
+                    std::cout << "The prime numbers are:";
+                    while(found_Nth_prime == false){
+                        bool is_prime = true;
+                        for(int i = 2; i < (number_checking+1); i++){
+                            if((number_checking%i == 0) && (i != number_checking)){
+                                is_prime = false;
+                            }
+                        }
+                        if(is_prime == true){
+                            primes_found++;
+                            std::cout << "  " << number_checking;
+                        }
+                        if(primes_found == N){
+                            found_Nth_prime = true;
+                        }
+                        else{
+                            number_checking++;
+                        }
+                    }
+                    std::cout << "." << std::endl << "Therefore the " << N << " position prime is " << number_checking << std::endl;
+                    std::cout << "Finding these primes took " << std::time(NULL) - start_time << " seconds." << std::endl;
+                }
+                else{
+                    std::cout << "That is not a positive integer, so the code cannot run." << std::endl;
+                }
+                break;
+            }
+            case 16:{ //Queen attack.
+                int white_x, white_y, black_x, black_y;
+                bool can_attack = false;
+                std::cout << "Enter the x position of the white queen (1-8, top left (1,1)): ";
+                std::cin >> white_x;
+                std::cout << "Enter the y position of the white queen (1-8, top left (1,1)): ";
+                std::cin >> white_y;
+                std::cout << "Enter the x position of the black queen (1-8, top left (1,1)): ";
+                std::cin >> black_x;
+                std::cout << "Enter the y position of the black queen (1-8, top left (1,1)): ";
+                std::cin >> black_y;
+                if((white_x == black_x) && (white_y == black_y)){
+                    std::cout << "Invalid entry, the pieces have been placed on top of one another." << std::endl;
+                }
+                else if((white_x > 0) && (white_x < 9) && (white_y > 0) && (white_y < 9) && (black_x > 0) && (black_x < 9) && (black_y > 0) && (black_y < 9)){
+                    for(int x = 1; x < 9; x++){
+                        for(int y = 1; y < 9; y++){
+                            if(x == white_x && y == white_y){
+                                std::cout << " W ";
+                            }
+                            else if(x == black_x && y == black_y){
+                                std::cout << " B ";
+                            }
+                            else{
+                                std::cout << " _ ";
+                            }
+                        }
+                        std::cout << std::endl;
+                    }
+                    if((white_x == black_x) || (white_y == black_y) || (abs(white_x - black_x) == abs(white_y - black_y))){
+                        can_attack = true;
+                    }
+                    if(can_attack == true){
+                        std::cout << "The queens can attack each other." << std::endl;
+                    }
+                }
+                else{
+                    if((white_x < 1) || (white_x > 8)){
+                        std::cout << "Invalid position. The white x coordinate is out of bounds." << std::endl;
+                    }
+                    if((white_y < 1) || (white_y > 8)){
+                        std::cout << "Invalid position. The white y coordinate is out of bounds." << std::endl;
+                    }
+                    if((black_x < 1) || (black_x > 8)){
+                        std::cout << "Invalid position. The black x coordinate is out of bounds." << std::endl;
+                    }
+                    if((black_y < 1) || (black_y > 8)){
+                        std::cout << "Invalid position. The black x coordinate is out of bounds." << std::endl;
+                    }
+                }
+                break;
+            }
+            case 17:{ //Sieve of Eratosthenes.
+                int N;
+                std::cout << "Enter a positive integer greater than 1: ";
+                std::cin >> N;
+                if(N > 1){
+                    int number_list[N-1];
+                    bool prime_list[N-1];
+                    for(int i = 0; i < (N-1); i++){
+                        number_list[i] = i + 2;
+                        prime_list[i] = true;
+                    }
+                    for(int i = 0; i < (N-1); i++){
+                        if(prime_list[i] == true){
+                            int multiples = 2;
+                            while((number_list[i]*multiples) <= N){
+                                prime_list[(number_list[i]*multiples) - 2] = false;
+                                multiples++;
+                            }
+                        }
+                    }
+                    std::cout << "The prime numbers are: " << std::endl;
+                    for(int i = 0; i < (N-1); i++){
+                        if(prime_list[i] == true){
+                            std::cout << number_list[i] << " ";
+                        }
+                    }
+                    std::cout << "." << std::endl;
+                }
+                else{
+                    std::cout << "That is not a positive integer greater than 1, so the code cannot run." << std::endl;
+                }
+                break;
+            }
+            case 18:{ //Integer to English.
+                int entry, digits = 0, chunks, count = 1;
+                std::cout << "Enter an integer between 0 and 999,999,999,999: ";
+                std::cin >> entry;
+                std::string singles[9] = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+                std::string teens[10] = {"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
+                std::string tens[8] = {"twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+                if((entry >= 0) && (entry < 1000000000000)){
+                    if(entry == 0){
+                        std::cout << "Zero" << std::endl;
+                    }
+                    while(digits == 0){
+                        if(int(entry/pow(10, count)) == 0){
+                            digits = count;
+                        }
+                        else{
+                            count++;
+                        }
+                    }
+                }
+                else{
+                    std::cout << "The entered number lies outside the range of 0 to 999,999,999,999, therefore the program cannot run." << std::endl;
+                }
                 break;
             }
             default:{
@@ -587,7 +757,7 @@ int main()
                 Sleep(1000);
             }
         }
-        Sleep(2000);
+        system("pause");
     }
     return 0;
 }
