@@ -22,6 +22,8 @@ int main()
         std::cout << "9. School directory system." << std::endl;
         std::cout << "10. Hamming distance." << std::endl;
         std::cout << "11. Nucleotide count." << std::endl;
+        std::cout << "12. DNA to RNA." << std::endl;
+        std::cout << "13. Collatz Conjecture." << std::endl;
         std::cout << "0. Exit system." << std::endl;
         int program_choice = 0;
         std::cin >> program_choice;
@@ -481,7 +483,7 @@ int main()
                 std::cout << "Please enter a nucleotide string (should only consist of A, C, G and T): ";
                 std::cin.ignore();
                 std::getline(std::cin, string_1);
-                int A_count = 0, C_count = 0, G_count = 0, T_count = 0; 
+                int A_count = 0, C_count = 0, G_count = 0, T_count = 0;
                 bool contains_other = false;
                 for(int i = 0; i < string_1.length(); i++){
                     switch(string_1[i]){
@@ -513,6 +515,70 @@ int main()
                 else{
                     std::cout << "The string contains characters other than A, C, G or T, and therefore is invalid." << std::endl;
                 }
+                Sleep(2000);
+                break;
+            }
+            case 12:{ //DNA to RNA
+                std::string string_DNA, string_RNA;
+                std::cout << "Please enter a nucleotide string (should only consist of A, C, G and T): ";
+                std::cin.ignore();
+                std::getline(std::cin, string_DNA);
+                bool contains_other = false;
+                for(int i = 0; i < string_DNA.length(); i++){
+                    switch(string_DNA[i]){
+                        case 'A':{
+                            string_RNA  = string_RNA + 'U';
+                            break;
+                        }
+                        case 'C':{
+                            string_RNA  = string_RNA + 'G';
+                            break;
+                        }
+                        case 'G':{
+                            string_RNA  = string_RNA + 'C';
+                            break;
+                        }
+                        case 'T':{
+                            string_RNA  = string_RNA + 'A';
+                            break;
+                        }
+                        default:{
+                            contains_other = true;
+                            break;
+                        }
+                    }
+                }
+                if(contains_other == false){
+                    std::cout << "The corresponding RNA string is " << string_RNA << std::endl;
+                }
+                else{
+                    std::cout << "The string contains characters other than A, C, G or T, and therefore is invalid." << std::endl;
+                }
+                Sleep(2000);
+                break;
+            }
+            case 13:{ //Collatz Conjecture.
+                int input;
+                std::cout << "Please enter an positive integer to begin: ";
+                std::cin >> input;
+                if(input > 0){
+                    while(input > 1){
+                        if(input%2 == 0){
+                            input = input/2;
+                        }
+                        else{
+                            input = (3*input) + 1;
+                        }
+                        if(input > 1){
+                            std::cout << input << "   ";
+                        }
+                    }
+                    std::cout << input << "   " << std::endl;
+                }
+                else{
+                    std::cout << "That is not a positive integer, so the code cannot run." << std::endl;
+                }
+
                 Sleep(2000);
                 break;
             }
