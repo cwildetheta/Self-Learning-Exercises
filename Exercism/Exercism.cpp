@@ -29,7 +29,7 @@ int main()
         std::cout << "15. Nth Prime." << std::endl;
         std::cout << "16. Queen attack." << std::endl;
         std::cout << "17. Sieve of Eratosthenes." << std::endl;
-        std::cout << "18. Integer to English." << std::end;
+        std::cout << "18. Integer to English." << std::endl;
         std::cout << "0. Exit system." << std::endl;
         int program_choice = 0;
         std::cin >> program_choice;
@@ -728,23 +728,111 @@ int main()
                 break;
             }
             case 18:{ //Integer to English.
-                int entry, digits = 0, chunks, count = 1;
+                long long entry, digits = 0, top_digits = 0, chunks = 0, count = 1;
                 std::cout << "Enter an integer between 0 and 999,999,999,999: ";
                 std::cin >> entry;
                 std::string singles[9] = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
                 std::string teens[10] = {"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
                 std::string tens[8] = {"twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+                std::string blocks[4] = {"hundred", "thousand", "million", "billion"};
                 if((entry >= 0) && (entry < 1000000000000)){
                     if(entry == 0){
                         std::cout << "Zero" << std::endl;
                     }
-                    while(digits == 0){
-                        if(int(entry/pow(10, count)) == 0){
-                            digits = count;
+                    else{
+                        while(digits == 0){
+                            if((entry/pow(10, count)) < 1){
+                                digits = count;
+                            }
+                            else{
+                                count++;
+                            }
                         }
-                        else{
-                            count++;
+                        int entry_digits[digits];
+                        for(int i = 0; i < digits; i++){
+                            entry_digits[i] = entry%10;
+                            entry = entry/10;
+                            std::cout << entry_digits[i] << " ";
                         }
+                        std::cout << std::endl;
+                        /*std::string EntryAsString = std::to_string((long long) entry);// see if that works ;)
+                        std::cout << EntryAsString << std::endl;*/
+                        chunks = ((digits-1)/3) + 1;
+                        top_digits = digits - (3*(chunks-1));
+                        std::cout << "The number has " << digits << " digits in " << chunks << " chunks, with " << top_digits << " digits in the top chunk." << std::endl;
+                        for(int i = 0; i < chunks; i++){
+                            if(i == 0){ //Top level chunk
+                                if(top_digits == 1){ //If single digit in top chunk
+                                    std::cout << singles[entry_digits[digits-1]-1];
+                                }
+                                else if(top_digits == 2){ //If two digits in top chunk
+                                    if(entry_digits[digits-2] == 1){ // 10-19
+                                        std::cout << teens[entry_digits[digits-2]];
+                                    }
+                                    else{ //20-99
+                                        std::cout << tens[entry_digits[digits-1]-2];
+                                        if(entry_digits[digits-2] != 0){
+                                            std::cout << " " << singles[entry_digits[digits-2]-1];
+                                        }
+                                    }
+                                }
+                                else{ //If three digits in top chunk
+                                    std::cout << singles[entry_digits[digits-1]-1] << " " << blocks[0];
+                                    if(entry_digits[digits-2] != 0){ //If there's a tens number, copy from above
+                                        if(entry_digits[digits-2] == 1){
+                                            std::cout << " and " << teens[entry_digits[digits-3]];
+                                        }
+                                        else{
+                                            std::cout << " and " << tens[entry_digits[digits-2]-2];
+                                            if(entry_digits[digits-3] != 0){
+                                                std::cout << " " << singles[entry_digits[digits-3]-1];
+                                            }
+                                        }
+                                    }
+                                    else if(entry_digits[digits-3] != 0){ //If there's only a singles number
+                                        std::cout << " and " << singles[entry_digits[digits-3]-1];
+                                    }
+                                }
+                                if(chunks > 1){
+                                    std::cout << " " << blocks[chunks-1];
+                                }
+                            }
+                            else{ //Generic other chunks
+                                if(entry_digits[digits-top_digits-1-(3*(i-1))] != 0 || entry_digits[digits-top_digits-2-(3*(i-1))] != 0 || entry_digits[digits-top_digits-3-(3*(i-1))] != 0){
+                                    std::cout << ",";
+                                }
+                                if(entry_digits[digits-top_digits-1-(3*(i-1))] != 0){
+                                    std::cout << " " << singles[entry_digits[digits-top_digits-1-(3*(i-1))]-1] << " " << blocks[0];
+                                }
+                                if(entry_digits[digits-top_digits-2-(3*(i-1))] != 0){
+                                    if(entry_digits[digits-top_digits-1-(3*(i-1))] != 0){
+                                        std::cout << " and";
+                                    }
+                                    if(entry_digits[digits-top_digits-2-(3*(i-1))] == 1){
+                                        std::cout << " " << teens[entry_digits[digits-top_digits-3-(3*(i-1))]] << " ";
+                                    }
+                                    else{
+                                        std::cout << " " << tens[entry_digits[digits-top_digits-2-(3*(i-1))]-2];
+                                        if(entry_digits[digits-top_digits-3-(3*(i-1))] != 0){
+                                            std::cout << " " << singles[entry_digits[digits-top_digits-3-(3*(i-1))]-1];
+                                        }
+                                    }
+                                }
+                                else if(entry_digits[digits-top_digits-3-(3*(i-1))] != 0){
+                                    if(entry_digits[digits-top_digits-1-(3*(i-1))] != 0 || i == (chunks-1)){
+                                        std::cout << " and";
+                                    }
+                                    std::cout << " " << singles[entry_digits[digits-top_digits-3-(3*(i-1))]-1];
+                                }
+                                if(chunks-i == 3 && (entry_digits[digits-top_digits-1-(3*(i-1))] != 0 || entry_digits[digits-top_digits-2-(3*(i-1))] != 0 || entry_digits[digits-top_digits-3-(3*(i-1))] != 0)){
+                                    std::cout << " " << blocks[2];
+                                }
+                                if(chunks-i == 2 && (entry_digits[digits-top_digits-1-(3*(i-1))] != 0 || entry_digits[digits-top_digits-2-(3*(i-1))] != 0 || entry_digits[digits-top_digits-3-(3*(i-1))] != 0)){
+                                    std::cout << " " << blocks[1];
+                                }
+                            }
+                        }
+                        std::cout << std::endl;
                     }
                 }
                 else{
