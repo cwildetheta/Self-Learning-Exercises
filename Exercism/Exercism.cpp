@@ -30,6 +30,10 @@ int main()
         std::cout << "16. Queen attack." << std::endl;
         std::cout << "17. Sieve of Eratosthenes." << std::endl;
         std::cout << "18. Integer to English." << std::endl;
+        std::cout << "19. Gigasecond." << std::endl;
+        std::cout << "20. Secret handshake." << std::endl;
+        std::cout << "21. Allergies." << std::endl;
+        std::cout << "22. Protein Translation." << std::endl;
         std::cout << "0. Exit system." << std::endl;
         int program_choice = 0;
         std::cin >> program_choice;
@@ -331,7 +335,7 @@ int main()
                                         int entry_2;
                                         std::cin >> entry_2;
                                         if(entry_2 > 0 && entry_2 <= gradetotals[grade-1]){
-                                            for(int i; i < (gradetotals[grade-1]-entry_2+1); i++){
+                                            for(int i = 0; i < (gradetotals[grade-1]-entry_2+1); i++){
                                                 student_enrollment[grade-1][entry_2+i-1] = student_enrollment[grade-1][entry_2+i];
                                             }
                                             student_enrollment[grade-1][gradetotals[grade-1]] = "";
@@ -391,7 +395,7 @@ int main()
                                     }
                                     else{
                                         std::cout << "The currently enrolled students are: ";
-                                        for(int i; i < 6; i++){
+                                        for(int i = 0; i < 6; i++){
                                             std::cout << "    starting with grade " << (i + 1) << "  "; 
                                             if(gradetotals[i] > 0){
                                                 int rankings[gradetotals[i]];
@@ -634,8 +638,41 @@ int main()
                             number_checking++;
                         }
                     }
+                    int end_time = std::time(NULL) - start_time;
                     std::cout << "." << std::endl << "Therefore the " << N << " position prime is " << number_checking << std::endl;
-                    std::cout << "Finding these primes took " << std::time(NULL) - start_time << " seconds." << std::endl;
+                    std::cout << "Finding these primes took " << end_time << " seconds by the brute force method." << std::endl;
+                    system("pause");
+                    primes_found = 0, number_checking = 2, found_Nth_prime = false;
+                    int *prime_array = new int[N];
+                    int start_time_2 = std::time(NULL);
+                    std::cout << "The prime numbers are:";
+                    for(int i = 0; i < N; i++){
+                        prime_array[i] = 0;
+                    }
+                    while(found_Nth_prime == false){
+                        bool is_prime = true;
+                        for(int i = 0; i < (primes_found); i++){
+                            if(number_checking%prime_array[i] == 0){
+                                is_prime = false;
+                            }
+                        }
+                        if(is_prime == true){
+                            prime_array[primes_found] = number_checking;
+                            primes_found++;
+                            std::cout << "  " << number_checking;
+                        }
+                        if(primes_found == N){
+                            found_Nth_prime = true;
+                        }
+                        else{
+                            number_checking++;
+                        }
+                    }
+                    int end_time_2 = std::time(NULL) - start_time_2;
+                    delete[] prime_array;
+                    std::cout << "." << std::endl << "Therefore the " << N << " position prime is " << number_checking << std::endl;
+                    std::cout << "Finding these primes took " << end_time_2 << " seconds by the new method." << std::endl;
+                    system("pause");
                 }
                 else{
                     std::cout << "That is not a positive integer, so the code cannot run." << std::endl;
@@ -837,6 +874,281 @@ int main()
                 }
                 else{
                     std::cout << "The entered number lies outside the range of 0 to 999,999,999,999, therefore the program cannot run." << std::endl;
+                }
+                break;
+            }
+            case 19:{
+                int year, month, day, hour, minute, second, day_ender;
+                bool enter_year = true, enter_month = true, enter_day = true, enter_hour = true, enter_minute = true, enter_second = true;
+                std::string months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+                int days_in_month[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+                std::string endings[4] = {"st", "nd", "rd", "th"};
+                std::cout << "Enter a date and time, from which the date and time one gigasecond in the future will be calculated." << std::endl;
+                while(enter_year == true){
+                    std::cout << "Please enter a year: ";
+                    std::cin >> year;
+                    if(year > 0 || year < 0){
+                        enter_year = false;
+                    }
+                    else{
+                        std::cout << "Not a valid year, please try again." << std::endl;
+                    }
+                }
+                while(enter_month == true){
+                    std::cout << "Please enter a month: ";
+                    std::cin >> month;
+                    if(month > 0 && month < 12){
+                        enter_month = false;
+                    }
+                    else{
+                        std::cout << "Not a valid month, please try again." << std::endl;
+                    }
+                }
+                while(enter_day == true){
+                    std::cout << "Please enter a day: ";
+                    std::cin >> day;
+                    if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12){
+                        if(day > 0 && day < 32){
+                            enter_day = false;
+                        }
+                        else{
+                            std::cout << "Not a valid day, please try again." << std::endl;
+                        }
+                    }
+                    else if(month == 4 || month == 6 || month == 9 || month == 11){
+                        if(day > 0 && day < 31){
+                            enter_day = false;
+                        }
+                        else{
+                            std::cout << "Not a valid day, please try again." << std::endl;
+                        }
+                    }
+                    else{
+                        if(year%4 == 0 && (year%100 != 0 || year%400 == 0)){
+                            if(day > 0 && day < 30){
+                                enter_day = false;
+                            }
+                            else{
+                                std::cout << "Not a valid day, please try again." << std::endl;
+                            }
+                        }
+                        else{
+                            if(day > 0 && day < 29){
+                                enter_day = false;
+                            }
+                            else{
+                                std::cout << "Not a valid day, please try again." << std::endl;
+                            }
+                        }
+                    }
+                    if(day == 1 || day == 21 || day == 31){
+                        day_ender = 0;
+                    }
+                    else if(day == 2 || day == 22){
+                        day_ender = 1;
+                    }
+                    else if(day == 3 || day == 23){
+                        day_ender = 2;
+                    }
+                    else{
+                        day_ender = 3;
+                    }
+                }
+                while(enter_hour == true){
+                    std::cout << "Please enter a hour: ";
+                    std::cin >> hour;
+                    if(hour >= 0 && hour < 24){
+                        enter_hour = false;
+                    }
+                    else{
+                        std::cout << "Not a valid hour value, please try again." << std::endl;
+                    }
+                }
+                while(enter_minute == true){
+                    std::cout << "Please enter a minute: ";
+                    std::cin >> minute;
+                    if(minute >= 0 && minute < 60){
+                        enter_minute = false;
+                    }
+                    else{
+                        std::cout << "Not a valid minute value, please try again." << std::endl;
+                    }
+                }
+                while(enter_second == true){
+                    std::cout << "Please enter a second: ";
+                    std::cin >> second;
+                    if(second >= 0 && second < 60){
+                        enter_second = false;
+                    }
+                    else{
+                        std::cout << "Not a valid seconds value, please try again." << std::endl;
+                    }
+                }
+                system("cls");
+                std::cout << "The entered time and date is: ";
+                if(hour < 10){
+                    std::cout << "0";
+                }
+                std::cout << hour << ":";
+                if(minute < 10){
+                    std::cout << "0";
+                }
+                std::cout << minute << ":";
+                if(second < 10){
+                    std::cout << "0";
+                }
+                std::cout << second << " on the " << day << endings[day_ender] << " of " << months[month-1] << " " << year << "." << std::endl;
+                second = second + 1000000000;
+                while(second > 60){
+                    second = second - 60;
+                    minute++;
+                    if(minute >= 60){
+                        minute = 0;
+                        hour++;
+                    }
+                    if(hour >= 24){
+                        hour = 0;
+                        day++;
+                    }
+                    if(year%4 == 0 && (year%100 != 0 || year%400 == 0)){
+                        if(month == 2){
+                            if(day > 29){
+                                day = 1;
+                                month++;
+                            }
+                        }
+                        else if(day > days_in_month[month-1]){
+                            day = 1;
+                            month++;
+                        }
+                    }
+                    else{
+                        if(day > days_in_month[month-1]){
+                            day = 1;
+                            month++;
+                        }
+                    }
+                    if(month > 12){
+                        month = 1;
+                        year++;
+                    }
+                }
+                std::cout << "The time and date after 1 gigayear is: ";
+                if(hour < 10){
+                    std::cout << "0";
+                }
+                std::cout << hour << ":";
+                if(minute < 10){
+                    std::cout << "0";
+                }
+                std::cout << minute << ":";
+                if(second < 10){
+                    std::cout << "0";
+                }
+                std::cout << second << " on the " << day << endings[day_ender] << " of " << months[month-1] << " " << year << "." << std::endl;
+                break;
+            }
+            case 20:{
+                std::cout << "Please enter a number between 1 and 31: ";
+                int entry;
+                std::string outputs[4] = {"wink", "double blink", "close your eyes", "jump"};
+                std::cin >> entry;
+                if(entry > 0 && entry < 32){
+                    bool binary[5] = {0,0,0,0,0};
+                    for(int i = 0; i < 5; i++){
+                        if(entry >= (16/int(pow(2,i)))){
+                            binary[i] = 1;
+                            entry -= (16/int(pow(2,i)));
+                        }
+                    }
+                    std::cout << "The binary output is: ";
+                    for(int i = 0; i < 5; i++){
+                        std::cout << binary[i];
+                    }
+                    std::cout << std::endl;
+                    if(binary[0] == false){
+                        for(int i = 0; i < 4; i++){
+                            if(binary[4-i] == true){
+                                std::cout << outputs[i] << "  ";
+                            }
+                        }
+                    }
+                    else{
+                        for(int i = 0; i < 4; i++){
+                            if(binary[i+1] == true){
+                                std::cout << outputs[3-i] << "  ";
+                            }
+                        }
+                    }
+                    std::cout << std::endl;
+                }
+                else{
+                    std::cout << "Invalid entry. Number is outside the range of 1 to 15." << std::endl;
+                }
+                break;
+            }
+            case 21:{
+                std::cout << "Please enter an allergy number: ";
+                int entry;
+                std::string allergies[8] = {"eggs", "peanuts", "shellfish", "strawberries", "tomatoes", "chocolate", "pollen", "cats"};
+                std::cin >> entry;
+                entry = entry%256;
+                if(entry > 0){
+                    std::cout << "The patient is allergic to: ";
+                    for(int i = 0; i < 8; i++){
+                        if(entry >= (128/int(pow(2,i)))){
+                            std::cout << "  " << allergies[7-i];
+                            entry -= (128/int(pow(2,i)));
+                        }
+                    }
+                    std::cout << "." << std::endl;
+                }
+                else{
+                    std::cout << "The patient has none of the stored allergies." << std::endl;
+                }
+                break;
+            }
+            case 22:{
+                std::cout << "Enter RNA string: ";
+                std::string sequence;
+                std::cin >> sequence;
+                std::string codons[17] = {"AUG", "UUU", "UUC", "UUA", "UUG", "UCU", "UCC", "UCA", "UCG", "UAU", "UAC", "UGU", "UGC", "UGG", "UAA", "UAG", "UGA"};
+                std::string proteins[7] = {"Methionine", "Phenylalanine", "Leucine", "Serine", "Tyrosine", "Cysteine", "Tryptophan"};
+                if(sequence.length()%3 == 0){
+                    int number = sequence.length()/3, read = 0;
+                    std::cout << "Protein string is:";
+                    while(read < number){
+                        std::string section = sequence.substr((3*read), 3);
+                        if((section == "AUG")){
+                            std::cout << "  " << proteins[0];
+                        }
+                        else if((section == "UUU") || (section == "UUC")){
+                            std::cout << "  " << proteins[1];
+                        }
+                        else if((section == "UUA") || (section == "UUG")){
+                            std::cout << "  " << proteins[2];
+                        }
+                        else if((section == "UCU") || (section == "UCC") || (section == "UCA") || (section == "UCG")){
+                            std::cout << "  " << proteins[3];
+                        }
+                        else if((section == "UAU") || (section == "UAC")){
+                            std::cout << "  " << proteins[4];
+                        }
+                        else if((section == "UGU") || (section == "UGC")){
+                            std::cout << "  " << proteins[5];
+                        }
+                        else if((section == "UGG")){
+                            std::cout << "  " << proteins[6];
+                        }
+                        else if((section == "UAA") || (section == "UAG") || (section == "UGA")){
+                            read = number;
+                        }
+                        read++;
+                    }
+                    std::cout << "." << std::endl;
+                }
+                else{
+                    std::cout << "Not a valid RNA string; strings should be composed of a series of blocks of 3." << std::endl;
                 }
                 break;
             }
